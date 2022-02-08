@@ -1,67 +1,49 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import { UsersState } from "../context/Context";
 
 function EditUser() {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
-  const [fetched, setFetched] = useState(false);
-
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const url = process.env.REACT_APP_API_URL + `/${id}`;
 
-  const putUser = async (e) => {
-    try {
-      e.preventDefault();
-      const response = await axios(url, {
-        method: "PUT",
-        data: {
-          firstname,
-          lastname,
-          email,
-          phone,
-          city,
-          state,
-          country,
-        },
-      });
-      if (response.status) {
-        alert("user updated successfully");
-        navigate("/users");
-      }
-    } catch (err) {
-      console.log(err);
-    }
+  const {
+    state: { users },
+    dispatch,
+  } = UsersState();
+
+  const user = users.find((usr) => usr.id === id);
+
+  const [firstName, setFirstname] = useState(user.firstName);
+  const [lastName, setLastname] = useState(user.lastName);
+  const [email, setEmail] = useState(user.email);
+  const [phoneNumber, setPhone] = useState(user.phoneNumber);
+  const [city, setCity] = useState(user.city);
+  const [state, setState] = useState(user.state);
+  const [country, setCountry] = useState(user.country);
+  const [fetched, setFetched] = useState(false);
+
+  const handleClick = () => {
+    dispatch({
+      type: "UPDATE",
+      payload: {
+        ...user,
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        city,
+        state,
+        country,
+      },
+    });
+    navigate("/users");
   };
 
   useEffect(() => {
-    try {
-      async function fetchUser() {
-        const response = await axios(url);
-        const user = response.data;
-        if (response.status) setFetched(true);
-        setFirstname(user.firstname);
-        setFirstname(user.firstname);
-        setLastname(user.lastname);
-        setEmail(user.email);
-        setPhone(user.phone);
-        setCity(user.city);
-        setState(user.state);
-        setCountry(user.country);
-      }
-      fetchUser();
-    } catch (err) {
-      console.log(err);
-    }
-  }, []);
+    setFetched(true);
+  }, [user]);
 
   return (
     <>
@@ -73,7 +55,7 @@ function EditUser() {
         <div className="d-flex justify-content-center mt-5">
           <Form className="card shadow p-4">
             <Image
-              src={`https://i.pravatar.cc/200?img=${id}`}
+              src={user.avatar}
               alt={`${id}-avatar`}
               roundedCircle
               style={{
@@ -90,7 +72,8 @@ function EditUser() {
                   <Form.Control
                     required
                     type="text"
-                    value={firstname}
+                    name="firstName"
+                    value={firstName}
                     placeholder="Enter your firstname"
                     onChange={(e) => setFirstname(e.target.value)}
                   />
@@ -103,7 +86,7 @@ function EditUser() {
                     required
                     type="text"
                     placeholder="Enter your lastname"
-                    value={lastname}
+                    value={lastName}
                     onChange={(e) => setLastname(e.target.value)}
                   />
                 </Form.Group>
@@ -125,7 +108,7 @@ function EditUser() {
                 required
                 type="tel"
                 placeholder="Enter your phone"
-                value={phone}
+                value={phoneNumber}
                 onChange={(e) => setPhone(e.target.value)}
               />
             </Form.Group>
@@ -138,7 +121,7 @@ function EditUser() {
                     type="text"
                     placeholder="City"
                     value={city}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => setCity(e.target.value)}
                   />
                 </Form.Group>
               </Col>
@@ -150,7 +133,7 @@ function EditUser() {
                     type="text"
                     placeholder="State"
                     value={state}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => setState(e.target.value)}
                   />
                 </Form.Group>
               </Col>
@@ -162,17 +145,13 @@ function EditUser() {
                     type="text"
                     placeholder="Country"
                     value={country}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => setCountry(e.target.value)}
                   />
                 </Form.Group>
               </Col>
             </Row>
             <Row>
-              <Button
-                type="submit"
-                onClick={(e) => putUser(e)}
-                className="w-50 mt-4 mx-auto"
-              >
+              <Button onClick={handleClick} className="w-50 mt-4 mx-auto">
                 Save
               </Button>
             </Row>

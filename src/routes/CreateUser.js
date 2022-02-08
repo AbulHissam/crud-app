@@ -1,44 +1,39 @@
-import axios from "axios";
+import faker from "@faker-js/faker";
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { UsersState } from "../context/Context";
 
 function CreateUser() {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
+  const [firstName, setFirstname] = useState("");
+  const [lastName, setLastname] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [phoneNumber, setPhone] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
 
-  const url = process.env.REACT_APP_API_URL;
-
   const navigate = useNavigate();
 
-  async function createUser(e) {
-    try {
-      e.preventDefault();
-      const response = await axios(url, {
-        method: "POST",
-        data: {
-          firstname,
-          lastname,
-          email,
-          phone,
-          city,
-          state,
-          country,
-        },
-      });
-      if (response.status) {
-        alert("user created successfully");
-        navigate("/users");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  const { dispatch } = UsersState();
+
+  const handleClick = () => {
+    dispatch({
+      type: "ADD",
+      payload: {
+        id: faker.datatype.uuid(),
+        avatar: faker.internet.avatar(),
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        city,
+        state,
+        country,
+      },
+    });
+    navigate("/users");
+  };
 
   return (
     <>
@@ -117,18 +112,13 @@ function CreateUser() {
                   required
                   type="text"
                   placeholder="Country"
-                  Country
                   onChange={(e) => setCountry(e.target.value)}
                 />
               </Form.Group>
             </Col>
           </Row>
           <Row>
-            <Button
-              type="submit"
-              className="w-50 mt-4 mx-auto"
-              onClick={(e) => createUser(e)}
-            >
+            <Button className="w-50 mt-4 mx-auto" onClick={handleClick}>
               Create
             </Button>
           </Row>
