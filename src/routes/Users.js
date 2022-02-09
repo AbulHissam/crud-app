@@ -10,9 +10,20 @@ function User() {
     dispatch,
   } = UsersState();
 
+  const homeLinkstyle = {
+    position: "absolute",
+    top: 30,
+    right: 200,
+  };
+
   return (
     <>
-      <p className="h1 text-center text-primary border p-2">Users</p>
+      <div className="d-flex align-items-center border p-2">
+        <Link to="/" style={homeLinkstyle}>
+          Home
+        </Link>
+        <p className="h1 text-primary mx-auto">Users</p>
+      </div>
       <Container className="my-4">
         <Row className="justify-content-between">
           {users?.map((user) => {
