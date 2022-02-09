@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Card, Image } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Button, Card, Image } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
 import { UsersState } from "../context/Context";
 
 function Profile() {
@@ -36,7 +36,6 @@ function Profile() {
                 height: "100px",
               }}
             ></Image>
-
             <div style={{ overflow: "hidden", textAlign: "center" }}>
               <Card.Title>{`${user.firstName},${user.lastName}`}</Card.Title>
               <Card.Text>{`Email:${user.email}`}</Card.Text>
@@ -46,6 +45,11 @@ function Profile() {
               <Card.Text>{`Country:${user.country}`}</Card.Text>
             </div>
           </Card.Body>
+          <Card.Footer>
+            <Link to={`/edit-users/${id}`}>
+              <Button>Edit</Button>
+            </Link>
+          </Card.Footer>
         </Card>
       )}
     </>
