@@ -17,15 +17,13 @@ function CreateUser() {
   async function createUser(e) {
     try {
       const response = await axiosInstance.post("/users", {
-        data: {
-          firstname,
-          lastname,
-          email,
-          phone,
-          city,
-          state,
-          country,
-        },
+        firstname,
+        lastname,
+        email,
+        phone,
+        city,
+        state,
+        country,
       });
       if (response.status) {
         alert("user created successfully");
