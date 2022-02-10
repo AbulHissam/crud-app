@@ -1,9 +1,11 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "./Requests/requests";
 
 function CreateUser() {
+  const navigate = useNavigate();
+
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -12,15 +14,9 @@ function CreateUser() {
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
 
-  const url = process.env.REACT_APP_API_URL;
-
-  const navigate = useNavigate();
-
   async function createUser(e) {
     try {
-      e.preventDefault();
-      const response = await axios(url, {
-        method: "POST",
+      const response = await axiosInstance.post("/users", {
         data: {
           firstname,
           lastname,

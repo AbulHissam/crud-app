@@ -1,18 +1,28 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { axiosInstance } from "./Requests/requests";
 
 function User() {
-  const url = process.env.REACT_APP_API_URL;
-
   const [users, setUsers] = useState([]);
   const [deleted, setDeleted] = useState(false);
+
+  const deleteUser = async (id) => {
+    try {
+      const response = await axiosInstance.delete(`/users/${id}`);
+      if (response.status) {
+        alert("user deleted successfully");
+        setDeleted(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await axios(url);
+        const response = await axiosInstance.get("/users");
         const { data } = response;
         setUsers(data);
       } catch (err) {
@@ -22,27 +32,26 @@ function User() {
     fetchUsers();
   }, [deleted]);
 
-  const deleteUser = async (id) => {
-    try {
-      const response = await axios(`${url}/${id}`, {
-        method: "DELETE",
-      });
-      if (response.status) {
-        alert("user deleted successfully");
-        setDeleted(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
     <>
-      <p className="h1 text-center text-primary border p-2">Users</p>
+      <div className="d-flex align-items-center border p-2">
+        <Link
+          to="/"
+          style={{
+            position: "absolute",
+            top: 30,
+            right: 200,
+          }}
+        >
+          Home
+        </Link>
+        <p className="h1 text-primary mx-auto">Users</p>
+      </div>
       <Container className="my-4">
         <Row className="justify-content-between">
           {users.map((user) => {
             return (
-              <Col lg={4} md={6}>
+              <Col key={user.id} lg={4} md={6}>
                 <Card className="shadow m-0 mb-4">
                   <Card.Body className="d-flex align-items-center gap-2">
                     <Link to={`/profile/${user.id}`}>
