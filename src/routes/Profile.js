@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Card, Image } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function Profile() {
   const { id } = useParams();
@@ -55,6 +55,14 @@ function Profile() {
               <Card.Text>{`Country:${user.country}`}</Card.Text>
             </div>
           </Card.Body>
+          <Card.Footer className="d-flex align-items-center justify-content-center w-100 bg-white">
+            <Link
+              to={`/edit-users/${id}`}
+              className="btn btn-primary flex-grow-1 mx-5 "
+            >
+              Edit
+            </Link>
+          </Card.Footer>
         </Card>
       )}
     </>
