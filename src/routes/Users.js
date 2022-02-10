@@ -1,18 +1,28 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { axiosInstance } from "./Requests/requests";
 
 function User() {
-  const url = process.env.REACT_APP_API_URL;
-
   const [users, setUsers] = useState([]);
   const [deleted, setDeleted] = useState(false);
+
+  const deleteUser = async (id) => {
+    try {
+      const response = axiosInstance.delete(`/${id}`);
+      if (response.status) {
+        alert("user deleted successfully");
+        setDeleted(true);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
     async function fetchUsers() {
       try {
-        const response = await axios(url);
+        const response = await axiosInstance.get("/users");
         const { data } = response;
         setUsers(data);
       } catch (err) {
@@ -22,19 +32,6 @@ function User() {
     fetchUsers();
   }, [deleted]);
 
-  const deleteUser = async (id) => {
-    try {
-      const response = await axios(`${url}/${id}`, {
-        method: "DELETE",
-      });
-      if (response.status) {
-        alert("user deleted successfully");
-        setDeleted(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
   return (
     <>
       <p className="h1 text-center text-primary border p-2">Users</p>

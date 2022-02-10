@@ -1,11 +1,10 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Card, Image } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import { axiosInstance } from "./Requests/requests";
 
 function Profile() {
   const { id } = useParams();
-  const url = process.env.REACT_APP_API_URL + `/${id}`;
 
   const [user, setUser] = useState();
   const [fetched, setFetched] = useState(false);
@@ -13,8 +12,8 @@ function Profile() {
   useEffect(() => {
     try {
       async function getUser() {
-        const response = await axios(url);
-        const data = response.data;
+        const response = await axiosInstance.get("/users");
+        const { data } = response;
         setUser(data);
         if (response.status) {
           setFetched(true);
