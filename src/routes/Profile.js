@@ -12,7 +12,7 @@ function Profile() {
   useEffect(() => {
     try {
       async function getUser() {
-        const response = await axiosInstance.get("/users");
+        const response = await axiosInstance.get(`/users/${id}`);
         const { data } = response;
         setUser(data);
         if (response.status) {

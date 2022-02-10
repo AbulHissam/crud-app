@@ -9,7 +9,7 @@ function User() {
 
   const deleteUser = async (id) => {
     try {
-      const response = axiosInstance.delete(`/${id}`);
+      const response = await axiosInstance.delete(`/users/${id}`);
       if (response.status) {
         alert("user deleted successfully");
         setDeleted(true);
@@ -34,12 +34,24 @@ function User() {
 
   return (
     <>
-      <p className="h1 text-center text-primary border p-2">Users</p>
+      <div className="d-flex align-items-center border p-2">
+        <Link
+          to="/"
+          style={{
+            position: "absolute",
+            top: 30,
+            right: 200,
+          }}
+        >
+          Home
+        </Link>
+        <p className="h1 text-primary mx-auto">Users</p>
+      </div>
       <Container className="my-4">
         <Row className="justify-content-between">
           {users.map((user) => {
             return (
-              <Col lg={4} md={6}>
+              <Col key={user.id} lg={4} md={6}>
                 <Card className="shadow m-0 mb-4">
                   <Card.Body className="d-flex align-items-center gap-2">
                     <Link to={`/profile/${user.id}`}>

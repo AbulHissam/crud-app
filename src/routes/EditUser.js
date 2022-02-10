@@ -138,7 +138,7 @@ function EditUser() {
                     type="text"
                     placeholder="City"
                     value={city}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => setCity(e.target.value)}
                   />
                 </Form.Group>
               </Col>
@@ -150,7 +150,7 @@ function EditUser() {
                     type="text"
                     placeholder="State"
                     value={state}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => setState(e.target.value)}
                   />
                 </Form.Group>
               </Col>
@@ -162,7 +162,7 @@ function EditUser() {
                     type="text"
                     placeholder="Country"
                     value={country}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(e) => setCountry(e.target.value)}
                   />
                 </Form.Group>
               </Col>
