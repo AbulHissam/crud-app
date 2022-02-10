@@ -2,15 +2,16 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import { useFormik } from "formik";
 
 function EditUser() {
-  const [firstname, setFirstname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
+  // const [firstname, setFirstname] = useState("");
+  // const [lastname, setLastname] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [phone, setPhone] = useState("");
+  // const [city, setCity] = useState("");
+  // const [state, setState] = useState("");
+  // const [country, setCountry] = useState("");
   const [fetched, setFetched] = useState(false);
 
   const navigate = useNavigate();
@@ -24,13 +25,13 @@ function EditUser() {
       const response = await axios(url, {
         method: "PUT",
         data: {
-          firstname,
-          lastname,
-          email,
-          phone,
-          city,
-          state,
-          country,
+          firstname: values.firstname,
+          lastname: values.lastname,
+          email: values.email,
+          phone: values.phone,
+          city: values.city,
+          state: values.state,
+          country: values.country,
         },
       });
       if (response.status) {
@@ -42,20 +43,32 @@ function EditUser() {
     }
   };
 
+  const { values, handleBlur, handleChange } = useFormik({
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      phone: "",
+      city: "",
+      state: "",
+      country: "",
+    },
+    onSubmit: putUser,
+  });
+
   useEffect(() => {
     try {
       async function fetchUser() {
         const response = await axios(url);
         const user = response.data;
         if (response.status) setFetched(true);
-        setFirstname(user.firstname);
-        setFirstname(user.firstname);
-        setLastname(user.lastname);
-        setEmail(user.email);
-        setPhone(user.phone);
-        setCity(user.city);
-        setState(user.state);
-        setCountry(user.country);
+        // setFirstname(user.firstname);
+        // setLastname(user.lastname);
+        // setEmail(user.email);
+        // setPhone(user.phone);
+        // setCity(user.city);
+        // setState(user.state);
+        // setCountry(user.country);
       }
       fetchUser();
     } catch (err) {
