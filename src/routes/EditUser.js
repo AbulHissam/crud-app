@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Image, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import { axiosInstance } from "../Requests/requests";
 
 function EditUser() {
   const [firstname, setFirstname] = useState("");
@@ -16,22 +16,18 @@ function EditUser() {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const url = process.env.REACT_APP_API_URL + `/${id}`;
 
   const putUser = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-      const response = await axios(url, {
-        method: "PUT",
-        data: {
-          firstname,
-          lastname,
-          email,
-          phone,
-          city,
-          state,
-          country,
-        },
+      const response = await axiosInstance.put(`/users/${id}`, {
+        firstname,
+        lastname,
+        email,
+        phone,
+        city,
+        state,
+        country,
       });
       if (response.status) {
         alert("user updated successfully");
@@ -45,7 +41,7 @@ function EditUser() {
   useEffect(() => {
     try {
       async function fetchUser() {
-        const response = await axios(url);
+        const response = await axiosInstance.get(`/users/${id}`);
         const user = response.data;
         if (response.status) setFetched(true);
         setFirstname(user.firstname);
@@ -71,7 +67,7 @@ function EditUser() {
       )}
       {fetched && (
         <div className="d-flex justify-content-center mt-5">
-          <Form className="card shadow p-4">
+          <Form onSubmit={(e) => putUser(e)} className="card shadow p-4">
             <Image
               src={`https://i.pravatar.cc/200?img=${id}`}
               alt={`${id}-avatar`}
@@ -88,7 +84,6 @@ function EditUser() {
                 <Form.Group>
                   <Form.Label>First Name</Form.Label>
                   <Form.Control
-                    required
                     type="text"
                     value={firstname}
                     placeholder="Enter your firstname"
@@ -100,7 +95,6 @@ function EditUser() {
                 <Form.Group>
                   <Form.Label>Last Name</Form.Label>
                   <Form.Control
-                    required
                     type="text"
                     placeholder="Enter your lastname"
                     value={lastname}
@@ -112,7 +106,6 @@ function EditUser() {
             <Form.Group>
               <Form.Label>Email</Form.Label>
               <Form.Control
-                required
                 type="email"
                 placeholder="Enter your email"
                 value={email}
@@ -122,7 +115,6 @@ function EditUser() {
             <Form.Group>
               <Form.Label>Phone</Form.Label>
               <Form.Control
-                required
                 type="tel"
                 placeholder="Enter your phone"
                 value={phone}
@@ -134,7 +126,6 @@ function EditUser() {
                 <Form.Group>
                   <Form.Label>City</Form.Label>
                   <Form.Control
-                    required
                     type="text"
                     placeholder="City"
                     value={city}
@@ -146,7 +137,6 @@ function EditUser() {
                 <Form.Group>
                   <Form.Label>State</Form.Label>
                   <Form.Control
-                    required
                     type="text"
                     placeholder="State"
                     value={state}
@@ -158,7 +148,6 @@ function EditUser() {
                 <Form.Group>
                   <Form.Label>Country</Form.Label>
                   <Form.Control
-                    required
                     type="text"
                     placeholder="Country"
                     value={country}
@@ -168,11 +157,7 @@ function EditUser() {
               </Col>
             </Row>
             <Row>
-              <Button
-                type="submit"
-                onClick={(e) => putUser(e)}
-                className="w-50 mt-4 mx-auto"
-              >
+              <Button type="submit" className="w-50 mt-4 mx-auto">
                 Save
               </Button>
             </Row>

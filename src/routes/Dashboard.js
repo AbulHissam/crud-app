@@ -9,7 +9,7 @@ function Dashboard() {
         className="shadow d-flex align-items-center justify-content-center"
         style={{ height: "50px" }}
       >
-        Crud App
+        Crud App With Axios
       </header>
       <div className="d-flex align-items-center justify-content-center gap-4 mt-4">
         <Link to="/users">

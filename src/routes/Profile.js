@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Image } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-import { axiosInstance } from "./Requests/requests";
+import { axiosInstance } from "../Requests/requests";
 
 function Profile() {
   const { id } = useParams();
