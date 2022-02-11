@@ -44,7 +44,7 @@ function CreateUser() {
       .max(50, "Too Long!")
       .required("Required"),
     lastname: Yup.string()
-      .min(2, "Too Short!")
+      .min(1, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
