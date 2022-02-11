@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { axiosInstance } from "./Requests/requests";
+import { axiosInstance } from "../Requests/requests";
 
 function User() {
   const [users, setUsers] = useState([]);
