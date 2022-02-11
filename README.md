@@ -7,5 +7,6 @@ Design an UI to implement the CRUD // CRUD - Create,Read,Update,Delete
 
 1.Used axios for handling API requests
 2.Used mock api as backend
-3.Added functionalities for Creating,Updating,Deleting users
-4.We can click on the profile icon to visit the profile page.
+3.User formik and yup for forms
+4.Added functionalities for Creating,Updating,Deleting users
+5.We can click on the profile icon to visit the profile page.
